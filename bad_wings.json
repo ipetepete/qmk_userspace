@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "notes": "",
+  "documentation": "Personal keymap for Bad Wings",
+  "keyboard": "hazel/bad_wings",
+  "keymap": "ipetepete",
+  "layout": "LAYOUT_wrap_split_3x5_3",
+  "layers": [
+    ["ALPHA"],
+    ["NUGUI"],
+    ["SYMBOLS"],
+    ["OPERATOR"]
+  ],
+  "author": ""
+}
