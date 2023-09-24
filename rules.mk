@@ -16,7 +16,7 @@ TAP_DANCE_ENABLE = yes
 CAPS_WORD_ENABLE = yes
 NKRO_ENABLE = no            # Nkey Rollover - if this doesn't work, see here: https://github.com/tmk/tmk_keyboard/wiki/FAQ#nkro-doesnt-work
 
-ifeq ($(strip $(KEYBOARD)), planck)
+ifeq ($(strip $(KEYBOARD)), planck/rev2)
 	# Do not enable SLEEP_LED_ENABLE. it uses the same timer as BACKLIGHT_ENABLE
 	BACKLIGHT_ENABLE = yes      # Enable keyboard backlight functionality
 	SLEEP_LED_ENABLE = no    # Breathing sleep LED during USB suspend

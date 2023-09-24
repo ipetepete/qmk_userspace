@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "notes": "",
+  "documentation": "Personal keymap for planck",
+  "keyboard": "planck/rev2",
+  "keymap": "ipetepete",
+  "layout": "LAYOUT_wrap_planck_grid",
+  "layers": [
+    ["C_48(ALPHA)"],
+    ["C_48(NUGUI)"],
+    ["C_48(SYMBOLS)"],
+    ["C_48(OPERATOR)"]
+  ],
+  "author": ""
+}

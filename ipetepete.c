@@ -13,9 +13,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     case KC_GSYM:
       if (record->tap.count > 0) {  // Replace tap behavior with OSL.
         if (!record->event.pressed) {
-          set_oneshot_layer(_SYMBOL, ONESHOT_OTHER_KEY_PRESSED);
+          set_oneshot_layer(SYM, ONESHOT_OTHER_KEY_PRESSED);
         } else {
-          clear_oneshot_layer_state(ONESHOT_PRESSED);
+        clear_oneshot_layer_state(ONESHOT_PRESSED);
         }
         return false;
       }
