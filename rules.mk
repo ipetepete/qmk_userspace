@@ -15,6 +15,8 @@ RGBLIGHT_ENABLE = no        # Enable WS2812 RGB underlight.  Do not enable this 
 TAP_DANCE_ENABLE = yes
 CAPS_WORD_ENABLE = yes
 NKRO_ENABLE = no            # Nkey Rollover - if this doesn't work, see here: https://github.com/tmk/tmk_keyboard/wiki/FAQ#nkro-doesnt-work
+LTO_ENABLE = yes
+COMBO_ENABLE = yes
 
 ifeq ($(strip $(KEYBOARD)), planck/rev2)
 	# Do not enable SLEEP_LED_ENABLE. it uses the same timer as BACKLIGHT_ENABLE
