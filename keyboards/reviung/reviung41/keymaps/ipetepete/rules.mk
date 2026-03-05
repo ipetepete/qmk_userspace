@@ -1,0 +1,4 @@
+#CONVERT_TO = elite_pi
+COMMAND_ENABLE = no
+CAPS_WORD_ENABLE = yes
+RGBLIGHT_ENABLE = yes

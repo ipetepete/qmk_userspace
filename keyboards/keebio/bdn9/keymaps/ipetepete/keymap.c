@@ -21,50 +21,65 @@ enum encoder_names {
   _MIDDLE,
 };
 
+enum macro_layers {
+    MENU=0, // multi
+    EDIT,   // edit
+    DAW,    // gold
+    AUTO,   // cyan
+    MOV     // green
+};
+
+#define INIT_WS  C(G(S(KC_I)))
+#define LFT_DESK C(G(KC_LEFT))
+#define RGT_DESK C(G(KC_RIGHT))
+#define ALT_TAB  A(KC_TAB)
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    /*
-        | Knob 1: Vol Dn/Up |      | Knob 2: Page Dn/Up |
-        | Press: Mute       | Home | Press: Play/Pause  |
-        | Hold: Layer 2     | Up   | RGB Mode           |
-        | Left              | Down | Right              |
-     */
-    [0] = LAYOUT(
-        KC_MUTE, KC_HOME, KC_MPLY,
-        MO(1)  , KC_UP  , RGB_MOD,
-        KC_LEFT, KC_DOWN, KC_RGHT
+    [MENU] = LAYOUT(
+        KC_MUTE, TO(MENU), KC_MPLY,
+        TG(DAW), TG(EDIT), TG(AUTO),
+        KC_MPRV, TG(MOV),  KC_MNXT
     ),
-    /*
-        | QK_BOOT          | N/A  | Media Stop |
-        | Held: Layer 2  | Home | RGB Mode   |
-        | Media Previous | End  | Media Next |
-     */
-    [1] = LAYOUT(
-        QK_BOOT  , BL_STEP, KC_STOP,
-        _______, KC_HOME, RGB_MOD,
-        KC_MPRV, KC_END , KC_MNXT
+    [EDIT] = LAYOUT(
+        _______, TO(MENU), _______,
+        RCTL(KC_A), KC_PGUP, RCTL(KC_C),
+        KC_HOME, KC_PGDN, KC_END
     ),
-    [2] = LAYOUT(
-        _______, _______, QK_BOOT,
+    [DAW] = LAYOUT(
+        _______, TO(MENU), _______,
         _______, _______, _______,
         _______, _______, _______
+    ),
+    [AUTO] = LAYOUT(
+        _______, TO(MENU), QK_BOOT,
+        INIT_WS, _______, _______,
+        LFT_DESK, ALT_TAB, RGT_DESK
+    ),
+    [MOV] = LAYOUT(
+        _______, TO(MENU), _______,
+        C(KC_LEFT), KC_UP,   C(KC_RIGHT),
+        KC_LEFT,    KC_DOWN, KC_RIGHT
     ),
 };
 
 bool encoder_update_user(uint8_t index, bool clockwise) {
+    uint8_t current_layer = get_highest_layer(layer_state);
     if (index == 0) {
-       if (clockwise) {
-            tap_code(KC_PGDN);
-        } else {
-            tap_code(KC_PGUP);
-        }    }
-    else if (index == 1) {
-        if (clockwise) {
-            tap_code(KC_DOWN);
-        } else {
-            tap_code(KC_UP);
+       if (current_layer == DAW) {
+            if (clockwise) {
+                tap_code(MS_WHLL);
+            } else {
+                tap_code(MS_WHLR);
+            }
+       } else {
+           if (clockwise) {
+                tap_code(KC_PGDN);
+            } else {
+                tap_code(KC_PGUP);
+            }
         }
     }
-    else if (index == 2) {
+    else if (index == 1) {
          if (clockwise) {
             tap_code(KC_VOLU);
         } else {
@@ -81,49 +96,37 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
 bool rgb_matrix_indicators_user(void) {
     uint8_t current_layer = get_highest_layer(layer_state);
     switch (current_layer) {
-        case 3:
+        case AUTO:
             rgb_matrix_set_color_all(RGB_CYAN);
+            rgb_matrix_set_color(1, RGB_ORANGE);
             break;
-        case 2:
-            rgb_matrix_set_color_all(RGB_CORAL);
+        case DAW:
+            rgb_matrix_set_color_all(RGB_GOLD);
+            rgb_matrix_set_color(1, RGB_ORANGE);
             break;
-        case 1:
+        case EDIT:
             rgb_matrix_set_color_all(RGB_RED);
+            rgb_matrix_set_color(1, RGB_ORANGE);
+            break;
+        case MOV:
+            rgb_matrix_set_color_all(RGB_GREEN);
+            rgb_matrix_set_color(1, RGB_ORANGE);
             break;
         default:
             rgb_matrix_set_color_all(RGB_ORANGE);
+            rgb_matrix_set_color(0, RGB_PURPLE);
+            rgb_matrix_set_color(1, RGB_ORANGE);
+            rgb_matrix_set_color(2, RGB_MAGENTA);
+            rgb_matrix_set_color(3, RGB_GOLD);
+            rgb_matrix_set_color(4, RGB_RED);
+            rgb_matrix_set_color(5, RGB_CYAN);
+            rgb_matrix_set_color(6, RGB_BLUE);
+            rgb_matrix_set_color(7, RGB_GREEN);
+            rgb_matrix_set_color(8, RGB_YELLOW);
+            rgb_matrix_set_color(9, 0,0,0);
+            rgb_matrix_set_color(10, 0,0,0);
             break;
-    }
-    return false;
-}
-/*
-bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-    rgb_matrix_mode(RGB_MATRIX_SOLID_COLOR);
-    for (uint8_t i = led_min; i < led_max; i++) {
-        switch(get_highest_layer(layer_state|default_layer_state)) {
-            case 0:
-            #if defined(RGBLIGHT_ENABLE)
-                rgb_matrix_set_color(i, HSV_TEAL);
-            #endif
-                break;
-            case 1:
-            #if defined(RGBLIGHT_ENABLE)
-                rgb_matrix_set_color(i, HSV_CYAN);
-            #endif
-                break;
-            case 2:
-            #if defined(RGBLIGHT_ENABLE)
-                rgb_matrix_set_color(i, HSV_AZURE);
-            #endif
-                break;
-            default:
-            #if defined(RGBLIGHT_ENABLE)
-                rgb_matrix_set_color(i, HSV_RED);
-            #endif
-                break;
-        }
     }
     return false;
 }
 
-*/
